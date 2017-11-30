@@ -1,0 +1,19 @@
+{
+    "name": "sle/simpleaddress",
+    "type": "typo3-cms-extension",
+    "description": "This extension offers an easy way for showing an address block with or without a Google Maps. The address will rendered in vCard format.",
+    "authors": [
+        {
+            "name": "Steve Lenz",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "typo3/cms-core": "^8.7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sle\\Simpleaddress\\": "Classes"
+        }
+    }
+}

@@ -1,77 +1,103 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2017-11-30T16:06:02Z"
+    <file source-language="en"
+          target-language="de"
+          datatype="plaintext"
+          original="messages"
+          date="2015-04-05T17:19:58Z"
           product-name="simpleaddress">
         <header/>
         <body>
-            <trans-unit id="tx_simpleaddress_domain_model_address">
+            <!-- Plugin-Names -->
+            <trans-unit id="plugin.address">
                 <source>Address</source>
+                <target>Adresse</target>
             </trans-unit>
-
             <!-- FlexForm address.xml -->
             <trans-unit id="fflabel.address">
                 <source>Address</source>
+                <target>Adresse</target>
             </trans-unit>
             <trans-unit id="fflabel.address.fn">
                 <source>Fullname</source>
+                <target>Name</target>
             </trans-unit>
             <trans-unit id="fflabel.address.street-address-name">
                 <source>Street</source>
+                <target>Strasse</target>
             </trans-unit>
             <trans-unit id="fflabel.address.street-address-number">
                 <source>Number</source>
+                <target>Nummer</target>
             </trans-unit>
             <trans-unit id="fflabel.address.postal-code">
                 <source>Postal Code</source>
+                <target>Postleitzahl</target>
             </trans-unit>
             <trans-unit id="fflabel.address.locality">
                 <source>Locality</source>
+                <target>Ort</target>
             </trans-unit>
             <trans-unit id="fflabel.address.country-name">
                 <source>Country</source>
+                <target>Land</target>
             </trans-unit>
             <trans-unit id="fflabel.address.tel.phone">
                 <source>Phone number</source>
+                <target>Telefonnummer</target>
             </trans-unit>
             <trans-unit id="fflabel.address.tel.fax">
                 <source>Fax number</source>
+                <target>Faxnummer</target>
             </trans-unit>
             <trans-unit id="fflabel.address.email">
                 <source>E-Mail</source>
+                <target>E-Mail</target>
             </trans-unit>
             <trans-unit id="fflabel.address.note">
                 <source>Note</source>
+                <target>Notiz</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps">
                 <source>Google Maps</source>
+                <target>Google Maps</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.switch">
                 <source>Show Google Maps</source>
+                <target>Google Maps anzeigen</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.latitude">
-                <source>Latitude (manually)</source>
+                <source>Latitude</source>
+                <target>Breitengrad (manuell)</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.longitude">
-                <source>Longitude (manually)</source>
+                <source>Longitude</source>
+                <target>Längengrad (manuell)</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.mapOptions.zoom">
                 <source>Zoom Level (0 - 25)</source>
+                <target>Zoomstufen (0 - 25)</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.mapOptions.maxZoom">
                 <source>Maximal Zoom Level (0 - 25)</source>
+                <target>Maximale Zoomstufen (0 - 25)</target>
             </trans-unit>
             <trans-unit id="fflabel.googleMaps.mapOptions.mapTypeId">
                 <source>The initial Map type</source>
+                <target>Initialer Kartentyp</target>
             </trans-unit>
             <!-- Address view -->
             <trans-unit id="address.view.tel.phone.type">
                 <source>Phone</source>
+                <target>Tel.</target>
             </trans-unit>
             <trans-unit id="address.view.tel.fax.type">
                 <source>Fax</source>
+                <target>Fax</target>
             </trans-unit>
             <trans-unit id="address.view.email.type">
                 <source>E-Mail</source>
+                <target>E-Mail</target>
             </trans-unit>
         </body>
     </file>

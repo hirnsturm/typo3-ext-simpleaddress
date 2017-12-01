@@ -1,5 +1,12 @@
 <?php
+
 namespace Sle\Simpleaddress\Controller;
+
+use Sle\Simpleaddress\Service\GoogleMapsApiV3Services;
+use Sle\Simpleaddress\Service\ViewService;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /***
  *
@@ -15,24 +22,83 @@ namespace Sle\Simpleaddress\Controller;
 /**
  * AddressController
  */
-class AddressController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class AddressController extends ActionController
 {
+
     /**
-     * addressRepository
-     *
-     * @var \Sle\Simpleaddress\Domain\Repository\AddressRepository
-     * @inject
+     * @param ViewInterface $view
      */
-    protected $addressRepository = null;
+    protected function initializeView(ViewInterface $view)
+    {
+        $this->view->assignMultiple([
+            'pid'            => $GLOBALS['TSFE']->id,
+            'cObjectData'    => $this->configurationManager->getContentObject()->data,
+            'sysLanguageUid' => $GLOBALS['TSFE']->sys_language_uid,
+        ]);
+    }
 
     /**
      * action show
      *
-     * @param \Sle\Simpleaddress\Domain\Model\Address $address
      * @return void
      */
-    public function showAction(\Sle\Simpleaddress\Domain\Model\Address $address)
+    public function showAction()
     {
-        $this->view->assign('address', $address);
+        $this->view
+            ->assign('settings', $this->settings)
+            ->assign('mapConfig', $this->loadMapConfiguration());
     }
+
+    /**
+     *
+     * @return JSON-String
+     */
+    private function loadMapConfiguration()
+    {
+        $mapConfig = [];
+        // mapOptions from flexform
+        foreach ($this->settings['flexform']['googleMaps']['mapOptions'] as $key => $val) {
+            $mapConfig[$key] = $val;
+        }
+        unset($mapConfig['mapTypeId']);
+        // load point
+        $mapConfig['points'] = $this->getPoints();
+
+        return json_encode($mapConfig, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getPoints()
+    {
+        /** @var StandaloneView $view */
+        $view = ViewService::getStandaloneViewObject($this->extensionName, 'Address/GoogleMapsInfoWindow');
+
+        $points['windowContent'] = $view->assignMultiple([
+            $this->settings['flexform']['address'],
+        ]);
+
+        if ('' !== $this->settings['flexform']['googleMaps']['latitude'] &&
+            '' !== $this->settings['flexform']['googleMaps']['longitude']
+        ) {
+            $points['lat'] = floatval($this->settings['flexform']['googleMaps']['latitude']);
+            $points['lon'] = floatval($this->settings['flexform']['googleMaps']['longitude']);
+        } else {
+            $coords = GoogleMapsApiV3Services::getGeoCoding(
+                $this->settings['flexform']['address']['location'],
+                $this->settings['flexform']['address']['postal-code'],
+                $this->settings['flexform']['address']['street-address-name'],
+                $this->settings['flexform']['address']['street-address-number']
+            );
+            if (isset($coords['results'][0]['geometry']['location'])) {
+                $points['lat'] = floatval($coords['results'][0]['geometry']['location']['lat']);
+                $points['lon'] = floatval($coords['results'][0]['geometry']['location']['lng']);
+            }
+        }
+
+        return $points;
+    }
+
 }

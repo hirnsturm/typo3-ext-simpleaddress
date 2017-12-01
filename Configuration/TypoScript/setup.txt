@@ -22,6 +22,25 @@ plugin.tx_simpleaddress_address {
     mvc {
         #callDefaultActionIfActionCantBeResolved = 1
     }
+    settings {
+        mapConfig {
+            icon = pin.svg
+            zoom = 15
+            mapTypeId = roadmap
+            center {
+                lat = 51.0567465
+                lng = 13.7407059
+            }
+            disableDefaultUI = 1
+            disableDoubleClickZoom = 1
+            zoomControl = 1
+            scrollwheel = 0
+            draggable = 1
+            mapStyle {
+
+            }
+        }
+    }
 }
 
 # these classes are only used in auto-generated templates

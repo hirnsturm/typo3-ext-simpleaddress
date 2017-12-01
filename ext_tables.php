@@ -18,3 +18,15 @@ call_user_func(
 
     }
 );
+
+/**
+ * Register FlexForms
+ */
+$flexFormFile = 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Address.xml';
+$pluginSignature = strtolower(str_replace('_', '', $_EXTKEY) . '_address');
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,pages,recursive';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    $pluginSignature,
+    $flexFormFile
+);

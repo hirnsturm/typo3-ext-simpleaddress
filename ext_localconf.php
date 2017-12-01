@@ -17,6 +17,8 @@ call_user_func(
             ]
         );
 
+        $lllPath = 'LLL:EXT:simpleaddress/Resources/Private/Language/locallang_plugins.xlf:';
+
     // wizards
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
         'mod {
@@ -24,8 +26,8 @@ call_user_func(
                 elements {
                     address {
                         icon = ' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('simpleaddress') . 'Resources/Public/Icons/user_plugin_address.svg
-                        title = LLL:EXT:simpleaddress/Resources/Private/Language/locallang_db.xlf:tx_simpleaddress_domain_model_address
-                        description = LLL:EXT:simpleaddress/Resources/Private/Language/locallang_db.xlf:tx_simpleaddress_domain_model_address.description
+                        title = ' . $lllPath . 'AddressShow.wizard.description
+						description = ' . $lllPath . 'AddressShow
                         tt_content_defValues {
                             CType = list
                             list_type = simpleaddress_address

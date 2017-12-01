@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en"
+          datatype="plaintext"
+          original="messages"
+          date="2016-11-09T15:31:57Z"
+          product-name="simpleaddress">
+        <header/>
+        <body>
+            <trans-unit id="AddressShow">
+                <source>Displays an address-block with Google Maps map.</source>
+            </trans-unit>
+            <trans-unit id="AddressShow.wizard.description">
+                <source>Simple-Address</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

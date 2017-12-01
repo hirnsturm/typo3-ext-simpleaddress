@@ -8,6 +8,7 @@
             "role": "Developer"
         }
     ],
+    "license": "MIT",
     "keywords": [
         "TYPO3",
         "CMS",

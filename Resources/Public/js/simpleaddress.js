@@ -30,7 +30,7 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
          * @param url
          */
         this.substituteHttpWithCurrentProtocol = function (url) {
-            return url.replace('http:', location.protocol);
+            return (url === undefined) ? null : url.replace('http:', location.protocol)
         };
 
     };
@@ -41,7 +41,7 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
     var addressShow = new function () {
 
         var self = this;
-        this.mapSelector = 'ext-simpleaddess-map';
+        this.mapSelector = '.ext-simpleaddess-map';
 
         /**
          * Initializer
@@ -49,7 +49,7 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
         this.init = function () {
             if (services.has(self.mapSelector)) {
                 $.each(services.get(self.mapSelector), function () {
-                    googleMaps.getMapBySelector(self.mapSelector);
+                    googleMaps.init(this);
                 });
             }
         };
@@ -83,66 +83,53 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
         };
 
         /**
-         *
-         * @param {string} mapSelector
-         * @returns {google.maps.Map}
-         */
-        this.getMapBySelector = function (mapSelector) {
-            var map = false;
-
-            this.maps.forEach(function (item) {
-                if (item.key === mapSelector) {
-                    map = item.value;
-                }
-            });
-
-            return (false === map) ? this.init(mapSelector) : map;
-        };
-
-        /**
          * Initializer
          *
-         * @param {string} mapSelector
+         * @param $mapItem
          * @returns {google.maps.Map}
          */
-        this.init = function (mapSelector) {
-            var $map = $(mapSelector);
-            var map = new google.maps.Map($map[0], {});
-            var config = $map.data('config');
+        this.init = function (mapItem) {
+            var $mapItem = $(mapItem);
+            var config = $mapItem.data('config');
 
-
-            console.log(config);
-
-
-            if (config) {
-                map = new google.maps.Map($map[0], {
+            if (config.mapConfig !== undefined) {
+                map = new google.maps.Map($mapItem[0], {
                     center: {
-                        lat: parseFloat(config.center.lat),
-                        lng: parseFloat(config.center.lng)
+                        lat: parseFloat(config.mapConfig.center.lat),
+                        lng: parseFloat(config.mapConfig.center.lng)
                     },
-                    zoom: parseInt(config.zoom),
-                    mapTypeId: config.mapTypeId,
-                    disableDefaultUI: config.disableDefaultUI,
-                    disableDoubleClickZoom: config.disableDoubleClickZoom,
-                    zoomControl: config.zoomControl,
-                    scrollwheel: config.scrollwheel,
-                    draggable: config.draggable,
-                    styles: config.mapStyle
+                    zoom: parseInt(config.mapConfig.zoom),
+                    mapTypeId: config.mapConfig.mapTypeId,
+                    disableDefaultUI: config.mapConfig.disableDefaultUI,
+                    disableDoubleClickZoom: config.mapConfig.disableDoubleClickZoom,
+                    zoomControl: config.mapConfig.zoomControl,
+                    scrollwheel: config.mapConfig.scrollwheel,
+                    draggable: config.mapConfig.draggable,
+                    styles: [
+                        {
+                            featureType: 'all',
+                            stylers: [
+                                {saturation: -80}
+                            ]
+                        }
+                    ]
                 });
+
+                self.maps.push({
+                    key: $mapItem.id,
+                    value: map
+                });
+
+                if (config.points !== undefined) {
+                    config.points.forEach(function (item) {
+                        self.addMarker(map, item.lat, item.lng, item.title, item.content, $mapItem.data('map-marker-icon'));
+                    });
+                }
+
+                return map;
             }
 
-            self.maps.push({
-                key: mapSelector,
-                value: map
-            });
-
-            if (config && config.marker !== undefined) {
-                config.marker.forEach(function (item) {
-                    self.addMarker(map, item.lat, item.lng, item.title, item.content, $map.data('map-icon-base-url') + $map.data('map-icon'));
-                });
-            }
-
-            return map;
+            return false;
         };
 
         /**
@@ -168,8 +155,7 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
                 google.maps.event.addListener(marker, 'click', function () {
                     self.closeInfos();
                     var infoWindow = new google.maps.InfoWindow({
-                        content: content,
-                        pixelOffset: new google.maps.Size(0, 87)
+                        content: content
                     });
                     infoWindow.open(self.markers, marker);
                 });
@@ -193,15 +179,6 @@ var SleSimpleaddress = (function (window, document, $, undefined) {
                 // blank the array
                 this.infoWindows.length = 0;
             }
-        };
-
-        /**
-         *
-         * @param carouselSelector
-         * @param carouselItemSelector
-         */
-        this.closeInfoWindow = function (carouselSelector, carouselItemSelector) {
-            $(carouselSelector).find('.owl-item').removeClass('skd-not-active skd-active');
         };
     };
 

@@ -4,6 +4,9 @@ namespace Sle\Simpleaddress\Controller;
 
 use Sle\Simpleaddress\Service\GoogleMapsApiV3Services;
 use Sle\Simpleaddress\Service\ViewService;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -55,36 +58,21 @@ class AddressController extends ActionController
      */
     private function loadMapConfiguration()
     {
-        $mapConfig = [];
-        // mapOptions from flexform
-        foreach ($this->settings['flexform']['googleMaps']['mapOptions'] as $key => $val) {
-            $mapConfig[$key] = $val;
-        }
-        unset($mapConfig['mapTypeId']);
-        // load point
-        $mapConfig['points'] = $this->getPoints();
+        $point = [];
 
-        return json_encode($mapConfig, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
-    }
-
-
-    /**
-     * @return string
-     */
-    private function getPoints()
-    {
         /** @var StandaloneView $view */
         $view = ViewService::getStandaloneViewObject($this->extensionName, 'Address/GoogleMapsInfoWindow');
 
-        $points['windowContent'] = $view->assignMultiple([
-            $this->settings['flexform']['address'],
-        ]);
+        $point['title'] = $this->settings['flexform']['address']['fn'];
+        $point['content'] = $view->assignMultiple([
+            'data' => $this->settings['flexform'],
+        ])->render();
 
         if ('' !== $this->settings['flexform']['googleMaps']['latitude'] &&
             '' !== $this->settings['flexform']['googleMaps']['longitude']
         ) {
-            $points['lat'] = floatval($this->settings['flexform']['googleMaps']['latitude']);
-            $points['lon'] = floatval($this->settings['flexform']['googleMaps']['longitude']);
+            $point['lat'] = floatval($this->settings['flexform']['googleMaps']['latitude']);
+            $point['lng'] = floatval($this->settings['flexform']['googleMaps']['longitude']);
         } else {
             $coords = GoogleMapsApiV3Services::getGeoCoding(
                 $this->settings['flexform']['address']['location'],
@@ -93,12 +81,30 @@ class AddressController extends ActionController
                 $this->settings['flexform']['address']['street-address-number']
             );
             if (isset($coords['results'][0]['geometry']['location'])) {
-                $points['lat'] = floatval($coords['results'][0]['geometry']['location']['lat']);
-                $points['lon'] = floatval($coords['results'][0]['geometry']['location']['lng']);
+                $point['lat'] = floatval($coords['results'][0]['geometry']['location']['lat']);
+                $point['lng'] = floatval($coords['results'][0]['geometry']['location']['lng']);
+            } else {
+                /** @var Logger $logger */
+                $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+                $logger->error($coords['error_message'], (array) $coords);
             }
         }
 
-        return $points;
+        $this->settings['mapConfig']['center'] = [
+            'lat' => $point['lat'],
+            'lng' => $point['lng'],
+        ];
+
+        $mapConfig = [
+            'mapConfig' => $this->settings['mapConfig'],
+            'points'    => [$point],
+        ];
+
+        foreach ($this->settings['flexform']['googleMaps']['mapOptions'] as $key => $val) {
+            $mapConfig['mapConfig'][$key] = $val;
+        }
+
+        return json_encode($mapConfig, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
     }
 
 }

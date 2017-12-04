@@ -24,7 +24,6 @@ plugin.tx_simpleaddress_address {
     }
     settings {
         mapConfig {
-            icon = pin.svg
             zoom = 15
             mapTypeId = roadmap
             center {
@@ -33,11 +32,16 @@ plugin.tx_simpleaddress_address {
             }
             disableDefaultUI = 1
             disableDoubleClickZoom = 1
-            zoomControl = 1
+            zoomControl = 0
             scrollwheel = 0
             draggable = 1
             mapStyle {
-
+                0 {
+                    featureType = all
+                    stylers: {
+                        saturation = -80
+                    }
+                }
             }
         }
     }

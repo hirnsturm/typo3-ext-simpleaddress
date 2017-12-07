@@ -7,6 +7,7 @@ use Sle\Simpleaddress\Service\ViewService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -60,8 +61,7 @@ class AddressController extends ActionController
     {
         $point = [];
 
-        /** @var StandaloneView $view */
-        $view = ViewService::getStandaloneViewObject($this->extensionName, 'Address/GoogleMapsInfoWindow');
+        $view = $this->getStandaloneView();
 
         $point['title'] = $this->settings['flexform']['address']['fn'];
         $point['content'] = $view->assignMultiple([
@@ -86,7 +86,7 @@ class AddressController extends ActionController
             } else {
                 /** @var Logger $logger */
                 $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                $logger->error($coords['error_message'], (array) $coords);
+                $logger->error($coords['error_message'], (array)$coords);
             }
         }
 
@@ -105,6 +105,25 @@ class AddressController extends ActionController
         }
 
         return json_encode($mapConfig, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+    }
+
+    /**
+     * @return object|StandaloneView
+     */
+    private function getStandaloneView()
+    {
+        $frameworkConfig = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
+        );
+
+        $viewPaths = [
+            'templateRootPaths' => $this->getViewProperty($frameworkConfig, 'templateRootPaths'),
+            'layoutRootPaths'   => $this->getViewProperty($frameworkConfig, 'layoutRootPaths'),
+            'partialRootPaths'  => $this->getViewProperty($frameworkConfig, 'partialRootPaths'),
+        ];
+
+        /** @var StandaloneView $view */
+        return ViewService::getStandaloneViewObject($viewPaths, 'Address/GoogleMapsInfoWindow');
     }
 
 }

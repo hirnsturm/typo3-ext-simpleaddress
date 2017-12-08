@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0] - 2017-12-04
 ### Added
-- Compleatly new developt extension
+- Compleatly new developed extension
 - TYPO3 Support 8.7.x - 8.7.99
 
 ### Removed

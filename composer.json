@@ -40,5 +40,8 @@
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/public"
     }
+  },
+  "conflict": {
+    "typo3/cms-composer-installers": "<1.4.6"
   }
 }

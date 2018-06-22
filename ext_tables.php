@@ -8,7 +8,8 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
             'Sle.Simpleaddress',
             'Address',
-            'Address'
+            'Address',
+            'EXT:simpleaddress/Resources/Public/Icons/user_plugin_address.svg'
         );
 
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('simpleaddress', 'Configuration/TypoScript', 'Simple-Address');
@@ -29,4 +30,12 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
     $pluginSignature,
     $flexFormFile
+);
+
+/** @var \TYPO3\CMS\Core\Imaging\IconRegistry $iconRegistry */
+$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+$iconRegistry->registerIcon(
+    'ext-simpleaddress-ext-icon',
+    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+    ['source' => 'EXT:simpleaddress/Resources/Public/Icons/user_plugin_address.svg']
 );

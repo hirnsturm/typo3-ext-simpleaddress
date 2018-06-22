@@ -37,7 +37,6 @@
       "dev-master": "1.0.x-dev"
     },
     "typo3/cms": {
-      "extension-key": "ext_scaffold",
       "cms-package-dir": "{$vendor-dir}/typo3/cms",
       "web-dir": ".Build/public"
     }

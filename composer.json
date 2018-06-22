@@ -1,26 +1,45 @@
 {
-    "name": "sle/simpleaddress",
-    "type": "typo3-cms-extension",
-    "description": "This extension offers an easy way for showing an address block with or without a Google Maps. The address will rendered in vCard format.",
-    "authors": [
-        {
-            "name": "Steve Lenz",
-            "role": "Developer"
-        }
-    ],
-    "license": "MIT",
-    "keywords": [
-        "TYPO3",
-        "CMS",
-        "address",
-        "Google Maps"
-    ],
-    "require": {
-        "typo3/cms-core": "^8.7.1"
-    },
-    "autoload": {
-        "psr-4": {
-            "Sle\\Simpleaddress\\": "Classes"
-        }
+  "name": "sle/simpleaddress",
+  "type": "typo3-cms-extension",
+  "description": "This extension offers an easy way for showing an address block with or without a Google Maps. The address will rendered in vCard format.",
+  "authors": [
+    {
+      "name": "Steve Lenz",
+      "role": "Developer"
     }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "TYPO3",
+    "CMS",
+    "address",
+    "Google Maps"
+  ],
+  "require": {
+    "php": ">=5.5 <7.3",
+    "typo3/cms-core": "^8.7.10",
+    "typo3/cms-fluid": "^8.7.10",
+    "typo3/cms-frontend": "^8.7.10"
+  },
+  "require-dev": {
+    "nimut/testing-framework": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Sle\\Simpleaddress\\": "Classes"
+    }
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    },
+    "typo3/cms": {
+      "extension-key": "ext_scaffold",
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "web-dir": ".Build/public"
+    }
+  }
 }

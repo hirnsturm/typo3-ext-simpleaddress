@@ -18,7 +18,10 @@ branches:
 
 notifications:
   email:
-    - github@steve-lenz.de
+    recipients:
+      - github@steve-lenz.de
+    on_success: never
+    on_failure: always
 
 addons:
   apt:

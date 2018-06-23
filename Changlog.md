@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.1] - 2017-12-07
+### Added
+- Travis CI
+
+## Bugfix
+- Missing extension icon
+
 ## [2.1.0] - 2017-12-07
 ### Added
 - [Task][Add] Enables TypoScript paths override for GoogleMapsInfoWindow

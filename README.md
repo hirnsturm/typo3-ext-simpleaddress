@@ -1,6 +1,8 @@
 TYPO3 CMS Extension *simpleaddress*
 ===================================
 
+![[Tracis CI](https://img.shields.io/)](https://img.shields.io/travis/hirnsturm/typo3-ext-simpleaddress/master.svg)
+
 ## Table of contents
 Inhalt
 * [What does it do?](#what-does-it-do)
